@@ -1,18 +1,29 @@
+<div align="center">
+
+<img src="icon.svg" width="96" alt="dsh-cc-auto-memory icon" />
+
 # dsh-cc-auto-memory
 
-[🇬🇧 English](./README.md) | [🇨🇳 简体中文](./README.zh-CN.md)
+**Claude Code's auto memory, packaged as a lightweight plugin for DeepSeek Harness (DSH): persistent, file-based memory.**
 
-Claude Code's auto-memory mechanism, packaged as a lightweight plugin for DeepSeek Harness (DSH): persistent, file-based memory.
+[![npm](https://img.shields.io/npm/v/dsh-cc-auto-memory)](https://www.npmjs.com/package/dsh-cc-auto-memory)
+[![license](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
+[![English](https://img.shields.io/badge/README-English-blue)](./README.md)
+[![简体中文](https://img.shields.io/badge/README-%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87-red)](./README.zh-CN.md)
 
-The host injects memory-usage instructions and the `MEMORY.md` index into each session; the model manages memory files with the plain `read` / `write` / `edit` tools — no dedicated memory tools are registered. The on-disk format is identical to Claude Code's, so memories are directly interoperable between the two (`claude` mode even shares the exact same directory).
+</div>
+
+At the start of each session, memory-usage instructions and the `MEMORY.md` index are injected automatically; the model manages memory files with the plain `read` / `write` / `edit` tools — no dedicated memory tools are registered. The on-disk format is identical to Claude Code's, so memories are directly interoperable between the two (`claude` mode even shares the exact same directory).
 
 ## Installation
+
+Web (CLI):
 
 ```
 dsh plugin --profile web add dsh-cc-auto-memory
 ```
 
-Or install straight from GitHub: `dsh plugin --profile web add github:jayhchen/dsh-cc-auto-memory`.
+Desktop: open the in-app **Plugins** page and search for `dsh-cc-auto-memory`.
 
 ## Mechanism
 

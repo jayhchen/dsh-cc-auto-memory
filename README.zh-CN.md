@@ -1,18 +1,29 @@
+<div align="center">
+
+<img src="icon.svg" width="96" alt="dsh-cc-auto-memory 图标" />
+
 # dsh-cc-auto-memory
 
-[🇬🇧 English](./README.md) | [🇨🇳 简体中文](./README.zh-CN.md)
+**把 Claude Code 的 auto memory 机制原样带到 DeepSeek Harness（DSH）的轻量级记忆插件：纯文件的持久化记忆。**
 
-把 Claude Code 的 auto memory 机制原样带到 DeepSeek Harness（DSH）的轻量级记忆插件：纯文件的持久化记忆。
+[![npm](https://img.shields.io/npm/v/dsh-cc-auto-memory)](https://www.npmjs.com/package/dsh-cc-auto-memory)
+[![license](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
+[![English](https://img.shields.io/badge/README-English-blue)](./README.md)
+[![简体中文](https://img.shields.io/badge/README-%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87-red)](./README.zh-CN.md)
 
-宿主在每个会话注入使用说明和 `MEMORY.md` 索引，模型直接用普通的 `read` / `write` / `edit` 文件工具管理记忆文件，不注册任何专用 memory 工具。落盘格式与 Claude Code 完全一致，两边记忆可直接互通（`claude` 模式甚至直接共享同一个记忆目录）。
+</div>
+
+每个会话开始时会自动注入使用说明和 `MEMORY.md` 索引，模型直接用普通的 `read` / `write` / `edit` 文件工具管理记忆文件，不注册任何专用 memory 工具。落盘格式与 Claude Code 完全一致，两边记忆可直接互通（`claude` 模式甚至直接共享同一个记忆目录）。
 
 ## 安装
+
+Web 端（命令行）：
 
 ```
 dsh plugin --profile web add dsh-cc-auto-memory
 ```
 
-或直接从 GitHub 安装：`dsh plugin --profile web add github:jayhchen/dsh-cc-auto-memory`。
+桌面版：打开应用内 **Plugins（插件）** 页，搜索 `dsh-cc-auto-memory` 安装。
 
 ## 机制
 
