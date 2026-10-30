@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Auto Memory",
+    "description": "兼容 Claude Code 的持久化文件记忆：每次会话注入 MEMORY.md 索引，模型用普通文件工具管理记忆，并在设置中提供查看页面。"
+  }
+}

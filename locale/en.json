@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Auto Memory",
+    "description": "Persistent file-based auto memory compatible with Claude Code: injects the MEMORY.md index each session, lets the model manage memories with plain file tools, and adds a read-only viewer page in Settings."
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "name": "dsh-cc-auto-memory",
+  "version": "0.1.0",
+  "license": "MIT",
+  "author": "jay (jayhchen)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jayhchen/dsh-cc-auto-memory.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jayhchen/dsh-cc-auto-memory/issues"
+  },
+  "homepage": "https://github.com/jayhchen/dsh-cc-auto-memory#readme",
+  "type": "module",
+  "description": "Claude Code-compatible auto memory for DeepSeek Harness: host-injected index recall, plain-file tools, and a read-only viewer page in Settings.",
+  "keywords": [
+    "deepseek-harness",
+    "deepseek",
+    "dsh",
+    "dsh-plugin",
+    "auto-memory",
+    "memory",
+    "persistent-memory",
+    "claude-code"
+  ],
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg"
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "cordis.patch.yml",
+    "locale/*.json",
+    "icon.svg",
+    "README.md",
+    "README.zh-CN.md",
+    "LICENSE"
+  ],
+  "dependencies": {
+    "@deepseek-ai/schemastery": "~3.18.5"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true
+    },
+    "manifestVersion": 1
+  }
+}

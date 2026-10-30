@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6366f1"/>
+      <stop offset="1" stop-color="#7c3aed"/>
+    </linearGradient>
+  </defs>
+  <!-- tile -->
+  <rect width="128" height="128" rx="28" fill="url(#bg)"/>
+  <!-- back card: the stack of topic files -->
+  <rect x="46" y="40" width="58" height="62" rx="10" fill="#ffffff" opacity="0.35"/>
+  <!-- front card: MEMORY.md -->
+  <rect x="24" y="24" width="58" height="62" rx="10" fill="#ffffff"/>
+  <!-- index line + topic lines -->
+  <g stroke-linecap="round">
+    <path d="M38 45h30" stroke="#4f46e5" stroke-width="8"/>
+    <path d="M38 61h26" stroke="#a5b4fc" stroke-width="7"/>
+    <path d="M38 77h18" stroke="#a5b4fc" stroke-width="7"/>
+  </g>
+  <!-- auto-recall spark -->
+  <path d="M80 6L83.2 14.8 92 18 83.2 21.2 80 30 76.8 21.2 68 18 76.8 14.8Z" fill="#fbbf24"/>
+</svg>

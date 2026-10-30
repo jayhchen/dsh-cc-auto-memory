@@ -1,0 +1,18 @@
+# dsh-cc-auto-memory bundle patch.
+#
+# Inserts the Host plugin row. The browser half is declared by `dsh.client`
+# in package.json. Every config value below can be overridden by the user's
+# own patch layer without editing this file.
+- insert:
+    - id: auto-memory
+      name: dsh-cc-auto-memory
+      config:
+        # Storage mode: 'dsh' keeps memory under $DSH_HOME/projects/<slug>/memory,
+        # 'claude' shares ~/.claude/projects/<slug>/memory with Claude Code.
+        mode: dsh
+        # Base directory of the Claude Code config when mode is 'claude'.
+        # Empty means: $CLAUDE_CONFIG_DIR when set, otherwise ~/.claude.
+        claudeConfigDir: ''
+        # Read limits for the MEMORY.md index, mirroring Claude Code defaults.
+        maxIndexLines: 200
+        maxIndexBytes: 25600
