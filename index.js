@@ -105,11 +105,67 @@ function memoryDir(flavor, slug, config) {
 	return path.join(projectsBase(flavor, config), slug, 'memory');
 }
 
-/** Walk up from `cwd` to the closest directory containing `.git`; fallback to cwd. */
+/** Directory-name charset of worktree gitdirs git itself creates. */
+const WORKTREE_NAME_RE = /^[A-Za-z0-9._-]+$/;
+
+/**
+ * Main repository root and gitdir path for a linked-worktree `gitdir:` value,
+ * or null. Relative gitdirs resolve against the worktree dir; Windows
+ * backslashes normalize. Null for anything that is not
+ * `<main>/.git/worktrees/<name>` (submodules point into `.git/modules/…`)
+ * or whose worktree name looks suspicious (`..`, `.git`, exotic charset,
+ * quoted values) — callers fall back to the directory itself.
+ */
+function worktreeGitdir(gitdir, worktreeDir) {
+	if (gitdir === '' || /["\0]/.test(gitdir)) return null;
+	const gitdirPath = path.resolve(worktreeDir, gitdir).replace(/\\/g, '/');
+	const normalized = gitdirPath.replace(/\/+$/, '');
+	const segments = normalized.split('/');
+	const name = segments.at(-1);
+	const parent = segments.at(-2);
+	const grandparent = segments.at(-3);
+	if (grandparent !== '.git' || parent !== 'worktrees') return null;
+	if (!WORKTREE_NAME_RE.test(name) || name === '.git' || name === '..') return null;
+	return { main: segments.slice(0, -3).join('/'), gitdirPath: normalized };
+}
+
+/**
+ * Walk up from `cwd` to the closest directory containing `.git`; fallback to cwd.
+ * A linked worktree's `.git` is a *file* (`gitdir: <main>/.git/worktrees/<name>`);
+ * such worktrees resolve to their main repository root so every session of one
+ * repository shares one memory project (Claude Code's auto-memory rule). The
+ * parsed main root is verified (its `.git` exists, the gitdir is a real
+ * directory) before it is trusted; submodules and unreadable/garbage `.git`
+ * files keep the old behavior. Never throws.
+ */
 async function projectRootFor(cwd) {
 	let dir = path.resolve(cwd);
 	for (;;) {
-		if (existsSync(path.join(dir, '.git'))) return dir;
+		const dotGit = path.join(dir, '.git');
+		if (existsSync(dotGit)) {
+			try {
+				const st = statSync(dotGit);
+				if (st.isDirectory()) return dir;
+				// isFile() guards against FIFOs/sockets: readFileSync would
+				// block the host's event loop forever on a non-regular file.
+				if (st.isFile()) {
+					const text = readFileSync(dotGit, 'utf8').replace(/^\uFEFF/, '');
+					const match = /^gitdir: ([^\r\n]*)$/m.exec(text);
+					const value = match ? match[1].trimEnd() : null;
+					const resolved = value ? worktreeGitdir(value, dir) : null;
+					if (
+						resolved &&
+						existsSync(path.join(resolved.main, '.git')) &&
+						statSync(resolved.gitdirPath).isDirectory()
+					) {
+						return resolved.main;
+					}
+				}
+			} catch {
+				// Unreadable or malformed `.git` file: fall through to the old behavior.
+			}
+			return dir;
+		}
 		const parent = path.dirname(dir);
 		if (parent === dir) return path.resolve(cwd);
 		dir = parent;
