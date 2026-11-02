@@ -63,7 +63,9 @@ Settings → Auto Memory (read-only viewing; editing/creating/deleting is left t
 - **Project list filtered by the active mode**: dsh mode shows only projects under `$DSH_HOME`; claude mode shows only projects under `~/.claude`
 - **Memory table**: **click any row to open a floating card** showing the raw file content (plain text, Markdown not rendered); Esc or clicking the overlay closes it
 
-<img src="assets/settings.webp" alt="Auto Memory settings panel" width="70%">
+<p align="center">
+  <img src="assets/settings.webp" alt="Auto Memory settings panel" width="70%">
+</p>
 
 ## Configuration
 

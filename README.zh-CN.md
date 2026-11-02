@@ -63,7 +63,9 @@ Settings → Auto Memory（只读查看，编辑/新建/删除交给会话中的
 - **项目列表按当前模式过滤**：dsh 模式只显示 `$DSH_HOME` 下的项目，claude 模式只显示 `~/.claude` 下的项目
 - **记忆表格**：**点击任意行弹出悬浮卡片**展示文件原文（纯文本，不渲染 Markdown），Esc 或点击遮罩关闭
 
-<img src="assets/settings.webp" alt="Auto Memory 设置面板" width="70%">
+<p align="center">
+  <img src="assets/settings.webp" alt="Auto Memory 设置面板" width="70%">
+</p>
 
 ## 配置
 
