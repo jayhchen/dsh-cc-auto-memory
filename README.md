@@ -51,22 +51,19 @@ next session recalls the refreshed index … loop
 - Subagent sessions get no main-session memory injected (same as Claude Code).
 - Project resolution: git repository root (cwd when outside a repo), `/` → `-` in the slug; one shared memory per repository.
 
-## Two storage modes
-
-- `dsh` (default): `$DSH_HOME/projects/<slug>/memory/`
-- `claude`: `~/.claude/projects/<slug>/memory/` (`CLAUDE_CONFIG_DIR` respected) — shares the same memory with Claude Code, interoperable both ways
-
-> In claude mode, the model's write/edit calls into `~/.claude/` fall outside the session workspace and trigger approvals per the session sandbox policy — this is expected.
-
 ## Viewer panel
 
 Settings → Auto Memory (read-only viewing; editing/creating/deleting is left to the agent's file tools during a session):
 
-- **Storage mode**: two mode cards (dsh standalone directory / claude reuse, each with its path and description) plus an "Apply switch" button, clearly noting it only takes effect for new sessions
-- **Project list filtered by the active mode**: dsh mode shows only projects under `$DSH_HOME`; claude mode shows only projects under `~/.claude`
-- **Memory table**: just "Memory / Description" columns, overlong descriptions ellipsized; **click any row to open a floating card** showing the raw file content (plain text, Markdown not rendered); Esc or clicking the overlay closes it
+- **Storage mode**: two mode cards (dsh standalone directory / claude reuse) plus an "Apply switch" button — switching only takes effect for new sessions:
+  - `dsh` (default): `$DSH_HOME/projects/<slug>/memory/`
+  - `claude`: `~/.claude/projects/<slug>/memory/` (`CLAUDE_CONFIG_DIR` respected) — shares the same memory with Claude Code, interoperable both ways
 
-![Auto Memory settings panel](assets/settings.webp)
+  > In claude mode, the model's write/edit calls into `~/.claude/` fall outside the session workspace and trigger approvals per the session sandbox policy — this is expected.
+- **Project list filtered by the active mode**: dsh mode shows only projects under `$DSH_HOME`; claude mode shows only projects under `~/.claude`
+- **Memory table**: **click any row to open a floating card** showing the raw file content (plain text, Markdown not rendered); Esc or clicking the overlay closes it
+
+<img src="assets/settings.webp" alt="Auto Memory settings panel" width="70%">
 
 ## Configuration
 

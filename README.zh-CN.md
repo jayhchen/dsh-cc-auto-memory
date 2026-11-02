@@ -51,22 +51,19 @@ next session recalls the refreshed index … loop
 - 子代理（subagent）会话不注入主会话记忆（与 Claude Code 一致）。
 - 项目定位：git 仓库根目录（仓库外用 cwd），路径中 `/` 替换为 `-` 作为 slug，同一仓库共享一份记忆。
 
-## 两种存储模式
-
-- `dsh`（默认）：`$DSH_HOME/projects/<slug>/memory/`
-- `claude`：`~/.claude/projects/<slug>/memory/`（尊重 `CLAUDE_CONFIG_DIR`），与 Claude Code 共享同一份记忆，双向互通
-
-> claude 模式下，模型通过 write/edit 写 `~/.claude/` 位于会话工作区之外，会按会话沙箱策略触发审批，属预期行为。
-
 ## 查看面板
 
 Settings → Auto Memory（只读查看，编辑/新建/删除交给会话中的 Agent 用文件工具完成）：
 
-- **存储模式**：两张模式卡片（dsh 独立目录 / claude 复用，各带路径与说明）＋「应用切换」按钮，明确提示只对新会话生效
-- **项目列表按当前模式过滤**：dsh 模式只显示 `$DSH_HOME` 下的项目，claude 模式只显示 `~/.claude` 下的项目
-- **记忆表格**：仅「记忆 / 描述」两列，描述超长自动省略；**点击任意行弹出悬浮卡片**展示文件原文（纯文本，不渲染 Markdown），Esc 或点击遮罩关闭
+- **存储模式**：两张模式卡片（dsh 独立目录 / claude 复用）＋「应用切换」按钮，切换只对新会话生效：
+  - `dsh`（默认）：`$DSH_HOME/projects/<slug>/memory/`
+  - `claude`：`~/.claude/projects/<slug>/memory/`（尊重 `CLAUDE_CONFIG_DIR`），与 Claude Code 共享同一份记忆，双向互通
 
-![Auto Memory 设置面板](assets/settings.webp)
+  > claude 模式下，模型通过 write/edit 写 `~/.claude/` 位于会话工作区之外，会按会话沙箱策略触发审批，属预期行为。
+- **项目列表按当前模式过滤**：dsh 模式只显示 `$DSH_HOME` 下的项目，claude 模式只显示 `~/.claude` 下的项目
+- **记忆表格**：**点击任意行弹出悬浮卡片**展示文件原文（纯文本，不渲染 Markdown），Esc 或点击遮罩关闭
+
+<img src="assets/settings.webp" alt="Auto Memory 设置面板" width="70%">
 
 ## 配置
 
