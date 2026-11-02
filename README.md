@@ -66,6 +66,8 @@ Settings → Auto Memory (read-only viewing; editing/creating/deleting is left t
 - **Project list filtered by the active mode**: dsh mode shows only projects under `$DSH_HOME`; claude mode shows only projects under `~/.claude`
 - **Memory table**: just "Memory / Description" columns, overlong descriptions ellipsized; **click any row to open a floating card** showing the raw file content (plain text, Markdown not rendered); Esc or clicking the overlay closes it
 
+![Auto Memory settings panel](assets/settings.webp)
+
 ## Configuration
 
 `cordis.patch.yml` can be overridden at the user layer:
