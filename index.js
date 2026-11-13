@@ -7,7 +7,7 @@
  *    (per-agent scoped registration), pointing at the session's memory
  *    directory with the directory absolute path spelled out.
  *  - The `MEMORY.md` index (first 200 lines / 25 KB) is recalled as a
- *    durable user-role runtime-context snapshot wrapped in
+ *    durable user-role runtime-context section; the host frames it in
  *    `<system-reminder>`, mirroring Claude Code's recall injection.
  *  - The model manages memory files with the plain `read` / `write` / `edit`
  *    tools; no dedicated memory tools are registered, so files written from
@@ -36,7 +36,6 @@ import path from 'node:path';
 import z from '@deepseek-ai/schemastery';
 
 const INDEX_FILE = 'MEMORY.md';
-const PLUGIN_ID = 'auto-memory';
 const API_PREFIX = '/auto-memory/api';
 const MAX_BODY_BYTES = 1024 * 1024;
 /** Hard read cap for one index read: pathological oversized indexes never feed the prompt-assembly path. */
@@ -374,7 +373,6 @@ function makeRecallProvider(dir, maxLines, maxBytes) {
 			const bytesRead = readSync(fd, buffer, 0, MAX_INDEX_READ_BYTES, 0);
 			let text = buffer.toString('utf8', 0, bytesRead);
 			// A partial trailing UTF-8 sequence decodes to replacement characters; trim it.
-			const replacement = '\ufffd';
 			let trimmed = text.length;
 			while (trimmed > 0 && text.charCodeAt(trimmed - 1) === 0xfffd && bytesRead === MAX_INDEX_READ_BYTES) {
 				trimmed -= 1;
@@ -404,8 +402,11 @@ function makeRecallProvider(dir, maxLines, maxBytes) {
 		}
 		const text = cache.text;
 		if (!text.trim()) return '';
-		const clipped = clipIndex(text, maxLines, maxBytes).replace(/<\/system-reminder>/g, '<\\/system-reminder>');
-		return `<system-reminder>\nContents of ${file} (user's auto-memory, persists across conversations):\n\n${clipped}\n</system-reminder>`;
+		// The host frames runtime-context sections in a <system-reminder> of its
+		// own (v0.2.2-rc.1+) and escapes nested closing tags, so this returns
+		// plain section text; a self-made wrapper would nest reminders.
+		const clipped = clipIndex(text, maxLines, maxBytes);
+		return `Contents of ${file} (user's auto-memory, persists across conversations):\n\n${clipped}`;
 	};
 }
 
@@ -525,6 +526,9 @@ export function apply(ctx, config) {
 					name: 'auto-memory-recall',
 					order: CONTEXT_ORDER,
 					interpolate: false,
+					// Memory recall is operational context: keep it when optional
+					// runtime context is suppressed.
+					required: true,
 					text: makeRecallProvider(dir, resolved.maxIndexLines, resolved.maxIndexBytes),
 				});
 				return () => {
@@ -753,18 +757,11 @@ export function apply(ctx, config) {
 				if (mode !== 'dsh' && mode !== 'claude') {
 					throw new ApiFailure('invalid-mode', "field mode must be 'dsh' or 'claude'");
 				}
-				const entries = ctx.configEditor.entries();
-				// Entry.id is the tree-scoped path (e.g. 'include:auto-memory') and the
-				// module specifier lives at options.name — match all spellings, defensively.
-				const entry = entries.find(
-					(candidate) =>
-						candidate?.options?.name === 'dsh-cc-auto-memory' ||
-						candidate?.options?.id === PLUGIN_ID ||
-						candidate?.id === PLUGIN_ID ||
-						(typeof candidate?.id === 'string' && candidate.id.endsWith(`:${PLUGIN_ID}`)),
-				);
+				// ctx.fiber.entry is this plugin's own config row — no name-based
+				// scan that could match another row of the same package.
+				const entry = ctx.fiber.entry;
 				if (entry === undefined) {
-					throw new ApiFailure('no-entry', 'plugin config entry not found', 500);
+					throw new ApiFailure('no-entry', 'configuration cannot be saved in this profile', 500);
 				}
 				await ctx.configEditor.edit(entry, (current, inherited) => {
 					// Persist only fields that already differ from the inherited layer plus the

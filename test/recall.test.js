@@ -59,7 +59,7 @@ test('auto-memory-recall uses only bytes read from MEMORY.md', async (t) => {
 			if (expected === '') {
 				assert.equal(result, '');
 			} else {
-				assert.equal(result, `<system-reminder>\nContents of ${file} (user's auto-memory, persists across conversations):\n\n${expected}\n</system-reminder>`);
+				assert.equal(result, `Contents of ${file} (user's auto-memory, persists across conversations):\n\n${expected}`);
 			}
 			assert.equal(recall(), result);
 		});
