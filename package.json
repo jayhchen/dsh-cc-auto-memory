@@ -36,6 +36,7 @@
     "locale/*.json",
     "icon.svg",
     "assets/icon-180.png",
+    "assets/banner.webp",
     "assets/settings.webp",
     "screenshots.json",
     "README.md",
