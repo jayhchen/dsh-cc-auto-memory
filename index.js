@@ -371,7 +371,7 @@ function makeRecallProvider(dir, maxLines, maxBytes) {
 		const fd = openSync(file, 'r');
 		try {
 			const buffer = Buffer.alloc(MAX_INDEX_READ_BYTES);
-			const { bytesRead } = readSync(fd, buffer, 0, MAX_INDEX_READ_BYTES, 0);
+			const bytesRead = readSync(fd, buffer, 0, MAX_INDEX_READ_BYTES, 0);
 			let text = buffer.toString('utf8', 0, bytesRead);
 			// A partial trailing UTF-8 sequence decodes to replacement characters; trim it.
 			const replacement = '\ufffd';
