@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/banner.webp" alt="dsh-cc-auto-memory — Persistent memory across sessions" width="100%">
+</p>
+
 <div align="center">
 
 <img src="icon.svg" width="96" alt="dsh-cc-auto-memory icon" />
