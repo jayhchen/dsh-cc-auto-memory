@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/banner.webp" alt="dsh-cc-auto-memory — 跨会话的持久化记忆" width="100%">
+</p>
+
 <div align="center">
 
 <img src="icon.svg" width="96" alt="dsh-cc-auto-memory 图标" />
