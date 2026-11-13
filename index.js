@@ -403,8 +403,8 @@ function makeRecallProvider(dir, maxLines, maxBytes) {
 		const text = cache.text;
 		if (!text.trim()) return '';
 		// The host frames runtime-context sections in a <system-reminder> of its
-		// own (v0.2.2-rc.1+) and escapes nested closing tags, so this returns
-		// plain section text; a self-made wrapper would nest reminders.
+		// own (since v0.2.2-rc.2) and escapes nested closing tags, so this
+		// returns plain section text; a self-made wrapper would nest reminders.
 		const clipped = clipIndex(text, maxLines, maxBytes);
 		return `Contents of ${file} (user's auto-memory, persists across conversations):\n\n${clipped}`;
 	};
