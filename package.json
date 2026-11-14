@@ -48,13 +48,14 @@
   },
   "engines": {
     "node": ">=24.9",
-    "dsh": ">=0.2.2-rc.2"
+    "dsh": ">=0.2.2-rc.2 <0.3.0"
   },
   "dsh": {
     "bundle": {
       "patch": "./cordis.patch.yml"
     },
     "client": {
+      "inject": ["@deepseek-ai/dsh-client-ui-settings-general"],
       "platform": "web",
       "immediately": true
     },
