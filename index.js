@@ -24,8 +24,9 @@
  *  - `claude`: `~/.claude/projects/<slug>/memory/` (shared with Claude Code,
  *              `CLAUDE_CONFIG_DIR` respected)
  *
- * `<slug>` is the git repository root (cwd when outside a repo) with path
- * separators replaced by `-`, matching Claude Code's project directory rule.
+ * `<slug>` is the git repository root (cwd when outside a repo) with every
+ * character outside `[A-Za-z0-9]` replaced by `-`, matching Claude Code's
+ * project directory rule.
  *
  * @module dsh-cc-auto-memory
  */
@@ -42,12 +43,12 @@ const MAX_BODY_BYTES = 1024 * 1024;
 const MAX_INDEX_READ_BYTES = 1024 * 1024;
 const FILE_NAME_RE = /^[A-Za-z0-9][A-Za-z0-9._-]{0,127}\.md$/;
 /**
- * Project slug shape: any single path segment (CC slugs are absolute paths
- * with separators replaced by `-`, so they legitimately start with `-` and
- * may contain spaces or unicode on some machines). `/`, `\` and NUL are
- * rejected so the slug can never escape its parent directory; pure-dot
- * names (`.`、`..`、`...`) are rejected separately in
- * {@link requireMemoryDir}.
+ * Project slug shape: any single path segment. Claude Code slugs are absolute
+ * paths with every character outside `[A-Za-z0-9]` replaced by `-`; directories
+ * written by older plugin versions can still contain spaces or unicode, so
+ * the shape stays permissive. `/`, `\` and NUL are rejected so the slug can
+ * never escape its parent directory; pure-dot names (`.`、`..`、`...`) are
+ * rejected separately in {@link requireMemoryDir}.
  */
 const SLUG_RE = /^[^/\\\0]{1,255}$/;
 const SECTION_ORDER = 50;
@@ -74,7 +75,7 @@ const Config = z.object({
 
 const inject = ['workingDirectory', 'webServer', 'connection', 'configEditor'];
 
-export { Config, inject };
+export { Config, inject, slugify };
 
 /**
  * @param {string} claudeConfigDir configured override, may be empty.
@@ -171,9 +172,18 @@ async function projectRootFor(cwd) {
 	}
 }
 
-/** Claude Code project slug: absolute path with separators replaced by `-`. */
+/**
+ * Claude Code project slug: every character outside `[A-Za-z0-9]` is replaced
+ * by `-` (so a Windows drive colon never reaches the file system). Slugs over
+ * 200 characters are truncated and suffixed with a base36 hash of the full
+ * path.
+ */
 function slugify(absolutePath) {
-	return absolutePath.replace(/[\\/]+$/, '').split(/[\\/]/).join('-');
+	const readable = absolutePath.replace(/[^a-zA-Z0-9]/g, '-');
+	if (readable.length <= 200) return readable;
+	let hash = 0;
+	for (let i = 0; i < absolutePath.length; i += 1) hash = (hash * 31 + absolutePath.charCodeAt(i)) | 0;
+	return `${readable.slice(0, 200)}-${Math.abs(hash).toString(36)}`;
 }
 
 // ---------------------------------------------------------------------------

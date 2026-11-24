@@ -62,7 +62,7 @@ next session recalls the refreshed index … loop
 ```
 
 - 子代理（subagent）会话不注入主会话记忆（与 Claude Code 一致）。
-- 项目定位：git 仓库根目录（仓库外用 cwd），路径中 `/` 替换为 `-` 作为 slug，同一仓库共享一份记忆。
+- 项目定位：git 仓库根目录（仓库外用 cwd），slug 中 `[A-Za-z0-9]` 之外的字符全部替换为 `-`（与 Claude Code 规则一致），同一仓库共享一份记忆。
 
 ## 查看面板
 
