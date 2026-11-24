@@ -62,7 +62,7 @@ next session recalls the refreshed index … loop
 ```
 
 - Subagent sessions get no main-session memory injected (same as Claude Code).
-- Project resolution: git repository root (cwd when outside a repo), `/` → `-` in the slug; one shared memory per repository.
+- Project resolution: git repository root (cwd when outside a repo), every character outside `[A-Za-z0-9]` replaced by `-` in the slug (Claude Code's rule); one shared memory per repository.
 
 ## Viewer panel
 

@@ -3,14 +3,14 @@ import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
-import { apply } from '../index.js';
+import { apply, slugify } from '../index.js';
 
 test('auto-memory-recall uses only bytes read from MEMORY.md', async (t) => {
 	const root = await mkdtemp(path.join(os.tmpdir(), 'auto-memory-recall-'));
 	t.after(() => rm(root, { recursive: true, force: true }));
 	const cwd = path.join(root, 'project');
 	await mkdir(path.join(cwd, '.git'), { recursive: true });
-	const slug = cwd.split(path.sep).join('-');
+	const slug = slugify(cwd);
 	const file = path.join(root, 'projects', slug, 'memory', 'MEMORY.md');
 	const listeners = new Map();
 	let recall;
